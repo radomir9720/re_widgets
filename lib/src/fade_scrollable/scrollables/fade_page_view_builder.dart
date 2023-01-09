@@ -1,3 +1,4 @@
+import 'package:flutter/gestures.dart';
 import 'package:flutter/widgets.dart';
 import 'package:re_widgets/re_widgets.dart';
 
@@ -9,21 +10,41 @@ class FadePageViewBuilder extends FadeScrollable<PageController> {
   /// {@macro re_seedwork.widgets.fadePageViewBuilder}
   FadePageViewBuilder({
     super.key,
-    required int itemCount,
-    required Widget Function(BuildContext context, int index) itemBuilder,
-    PageController Function()? createController,
-    super.axis = Axis.horizontal,
     bool padEnds = true,
+    bool reverse = false,
+    String? restorationId,
+    ScrollPhysics? physics,
+    required int itemCount,
     super.disposeController,
     super.fadeDimensionFactor,
+    bool pageSnapping = true,
+    super.axis = Axis.horizontal,
+    ScrollBehavior? scrollBehavior,
+    Clip clipBehavior = Clip.hardEdge,
+    void Function(int)? onPageChanged,
+    bool allowImplicitScrolling = false,
+    ChildIndexGetter? findChildIndexCallback,
+    required IndexedWidgetBuilder itemBuilder,
+    PageController Function()? createController,
+    DragStartBehavior dragStartBehavior = DragStartBehavior.start,
   }) : super(
           createController: createController ?? PageController.new,
           scrollable: (controller) => PageView.builder(
-            controller: controller,
-            itemBuilder: itemBuilder,
+            padEnds: padEnds,
+            reverse: reverse,
+            physics: physics,
             itemCount: itemCount,
             scrollDirection: axis,
-            padEnds: padEnds,
+            controller: controller,
+            itemBuilder: itemBuilder,
+            clipBehavior: clipBehavior,
+            pageSnapping: pageSnapping,
+            restorationId: restorationId,
+            onPageChanged: onPageChanged,
+            scrollBehavior: scrollBehavior,
+            dragStartBehavior: dragStartBehavior,
+            findChildIndexCallback: findChildIndexCallback,
+            allowImplicitScrolling: allowImplicitScrolling,
           ),
         );
 }

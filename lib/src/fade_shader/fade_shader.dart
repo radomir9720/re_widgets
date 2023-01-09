@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-part 'enable_fade_side_change_notifier.dart';
+part 'fade_side_factor_change_notifier.dart';
 
 /// Creates a fade [ShaderMask] on top of the [child]
 class FadeShader extends StatelessWidget {
@@ -9,7 +9,7 @@ class FadeShader extends StatelessWidget {
     super.key,
     required this.axis,
     required this.child,
-    required this.enableFadeSideChangeNotifier,
+    required this.fadeSideFactorChangeNotifier,
     this.shadeDimensionFactor = kDefaultFadeDimensionFactor,
   });
 
@@ -18,12 +18,12 @@ class FadeShader extends StatelessWidget {
   factory FadeShader.vertical({
     Key? key,
     required Widget child,
-    required EnableFadeSideChangeNotifier enableFadeSideChangeNotifier,
+    required FadeSideFactorChangeNotifier fadeSideFactorChangeNotifier,
     double shadeDimensionFactor = kDefaultFadeDimensionFactor,
   }) =>
       FadeShader(
         key: key,
-        enableFadeSideChangeNotifier: enableFadeSideChangeNotifier,
+        fadeSideFactorChangeNotifier: fadeSideFactorChangeNotifier,
         shadeDimensionFactor: shadeDimensionFactor,
         axis: Axis.vertical,
         child: child,
@@ -34,12 +34,12 @@ class FadeShader extends StatelessWidget {
   factory FadeShader.horizontal({
     Key? key,
     required Widget child,
-    required EnableFadeSideChangeNotifier enableFadeSideChangeNotifier,
+    required FadeSideFactorChangeNotifier fadeSideFactorChangeNotifier,
     double shadeDimensionFactor = kDefaultFadeDimensionFactor,
   }) =>
       FadeShader(
         key: key,
-        enableFadeSideChangeNotifier: enableFadeSideChangeNotifier,
+        fadeSideFactorChangeNotifier: fadeSideFactorChangeNotifier,
         shadeDimensionFactor: shadeDimensionFactor,
         axis: Axis.horizontal,
         child: child,
@@ -58,9 +58,10 @@ class FadeShader extends StatelessWidget {
   @protected
   final double shadeDimensionFactor;
 
-  /// ValueNotifier, which notifies when [EnableFadeSideState] changes
+  /// [ValueNotifier], which notifies
+  /// when [FadeSideFactorChangeNotifier] changes
   @protected
-  final EnableFadeSideChangeNotifier enableFadeSideChangeNotifier;
+  final FadeSideFactorChangeNotifier fadeSideFactorChangeNotifier;
 
   /// {@template re_seedwork.widgets.fadeShader.axis}
   /// Axis of the fade effect
@@ -70,37 +71,35 @@ class FadeShader extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ValueListenableBuilder<EnableFadeSideState>(
-      valueListenable: enableFadeSideChangeNotifier,
+    return ValueListenableBuilder<FadeSideFactorState>(
+      valueListenable: fadeSideFactorChangeNotifier,
       builder: (context, state, child) {
-        return state.bothDisabled
-            ? const SizedBox.shrink()
-            : ShaderMask(
-                shaderCallback: (rect) {
-                  return LinearGradient(
-                    begin: axis == Axis.vertical
-                        ? Alignment.topCenter
-                        : Alignment.centerLeft,
-                    end: axis == Axis.vertical
-                        ? Alignment.bottomCenter
-                        : Alignment.centerRight,
-                    stops: [
-                      if (state.enableStart) .0,
-                      shadeDimensionFactor,
-                      1 - shadeDimensionFactor,
-                      if (state.enableEnd) 1,
-                    ],
-                    colors: [
-                      if (state.enableStart) Colors.transparent,
-                      Colors.black,
-                      Colors.black,
-                      if (state.enableEnd) Colors.transparent,
-                    ],
-                  ).createShader(Offset.zero & Size(rect.width, rect.height));
-                },
-                blendMode: BlendMode.dstIn,
-                child: child,
-              );
+        return ShaderMask(
+          shaderCallback: (rect) {
+            return LinearGradient(
+              begin: axis == Axis.vertical
+                  ? Alignment.topCenter
+                  : Alignment.centerLeft,
+              end: axis == Axis.vertical
+                  ? Alignment.bottomCenter
+                  : Alignment.centerRight,
+              stops: [
+                .0,
+                state.start,
+                1 - state.end,
+                1,
+              ],
+              colors: const [
+                Colors.transparent,
+                Colors.black,
+                Colors.black,
+                Colors.transparent,
+              ],
+            ).createShader(Offset.zero & Size(rect.width, rect.height));
+          },
+          blendMode: BlendMode.dstIn,
+          child: child,
+        );
       },
       child: child,
     );

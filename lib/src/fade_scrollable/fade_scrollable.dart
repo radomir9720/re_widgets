@@ -28,7 +28,7 @@ class FadeScrollable<T extends ScrollController> extends StatefulWidget {
   @protected
   final T Function() createController;
 
-  /// Wheter should be disposed the scroll controller
+  /// Whether should be disposed the scroll controller
   @protected
   final bool disposeController;
 
@@ -44,42 +44,55 @@ class _FadeScrollableState<T extends ScrollController>
     extends State<FadeScrollable<T>> {
   late final T controller;
 
-  final enableFadeSideChangeNotifier = EnableFadeSideChangeNotifier(
-    const EnableFadeSideState(
-      enableStart: false,
-      enableEnd: true,
-    ),
-  );
+  late final FadeSideFactorChangeNotifier fadeSideFactorChangeNotifier;
 
   @override
   void initState() {
     super.initState();
     controller = widget.createController();
     controller.addListener(onPositionChanged);
+
+    fadeSideFactorChangeNotifier = FadeSideFactorChangeNotifier(
+      FadeSideFactorState(
+        start: 0,
+        end: widget.fadeDimensionFactor,
+      ),
+    );
+
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+      onPositionChanged();
+    });
   }
 
   void onPositionChanged() {
-    final enableStart = enableFadeSideChangeNotifier.value.enableStart;
-    final enableEnd = enableFadeSideChangeNotifier.value.enableEnd;
-
-    if (controller.offset <= 0) {
-      if (enableStart) enableFadeSideChangeNotifier.update(enableStart: false);
-    } else if (controller.offset >= controller.position.maxScrollExtent) {
-      if (enableEnd) enableFadeSideChangeNotifier.update(enableEnd: false);
-    } else {
-      if (!enableStart || !enableEnd) {
-        enableFadeSideChangeNotifier
-          ..update(enableStart: true)
-          ..update(enableEnd: true);
-      }
+    final viewport = controller.position.viewportDimension;
+    final maxScrollExtent = controller.position.maxScrollExtent;
+    if (viewport <= maxScrollExtent) {
+      fadeSideFactorChangeNotifier.updateFadeFactor(
+        start: 0,
+        end: 0,
+      );
+      return;
     }
+    final offset = controller.offset.clamp(0, maxScrollExtent);
+
+    final startFactor = (offset.clamp(0, viewport) / viewport)
+        .clamp(0.0, widget.fadeDimensionFactor);
+
+    final endFactor = ((maxScrollExtent - offset).clamp(0, viewport) / viewport)
+        .clamp(0.0, widget.fadeDimensionFactor);
+
+    fadeSideFactorChangeNotifier.updateFadeFactor(
+      start: startFactor,
+      end: endFactor,
+    );
   }
 
   @override
   void dispose() {
     controller.removeListener(onPositionChanged);
     if (widget.disposeController) controller.dispose();
-    enableFadeSideChangeNotifier.dispose();
+    fadeSideFactorChangeNotifier.dispose();
     super.dispose();
   }
 
@@ -87,7 +100,7 @@ class _FadeScrollableState<T extends ScrollController>
   Widget build(BuildContext context) {
     return FadeShader(
       axis: widget.axis,
-      enableFadeSideChangeNotifier: enableFadeSideChangeNotifier,
+      fadeSideFactorChangeNotifier: fadeSideFactorChangeNotifier,
       shadeDimensionFactor: widget.fadeDimensionFactor,
       child: widget.scrollable(controller),
     );
