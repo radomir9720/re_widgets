@@ -1,3 +1,4 @@
+import 'package:flutter/gestures.dart';
 import 'package:flutter/widgets.dart';
 import 'package:re_widgets/re_widgets.dart';
 
@@ -14,12 +15,29 @@ class FadeSingleChildScrollView extends FadeScrollable {
     super.disposeController,
     super.axis,
     super.fadeDimensionFactor,
+    bool reverse = false,
+    EdgeInsets? padding,
+    bool? primary,
+    ScrollPhysics? physics,
+    DragStartBehavior dragStartBehavior = DragStartBehavior.start,
+    Clip clipBehavior = Clip.hardEdge,
+    String? restorationId,
+    ScrollViewKeyboardDismissBehavior keyboardDismissBehavior =
+        ScrollViewKeyboardDismissBehavior.manual,
   }) : super(
           createController: createController ?? ScrollController.new,
           scrollable: (controller) {
             return SingleChildScrollView(
               controller: controller,
               scrollDirection: axis,
+              reverse: reverse,
+              padding: padding,
+              primary: primary,
+              physics: physics,
+              clipBehavior: clipBehavior,
+              restorationId: restorationId,
+              dragStartBehavior: dragStartBehavior,
+              keyboardDismissBehavior: keyboardDismissBehavior,
               child: child,
             );
           },

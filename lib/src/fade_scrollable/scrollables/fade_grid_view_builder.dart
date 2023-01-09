@@ -1,3 +1,4 @@
+import 'package:flutter/gestures.dart';
 import 'package:flutter/widgets.dart';
 import 'package:re_widgets/re_widgets.dart';
 
@@ -17,6 +18,21 @@ class FadeGridViewBuilder extends FadeScrollable {
     ScrollController Function()? createController,
     super.disposeController,
     super.fadeDimensionFactor,
+    bool reverse = false,
+    String? restorationId,
+    ScrollPhysics? physics,
+    bool? primary,
+    bool shrinkWrap = false,
+    Clip clipBehavior = Clip.hardEdge,
+    ChildIndexGetter? findChildIndexCallback,
+    double? cacheExtent,
+    bool addAutomaticKeepAlives = true,
+    bool addRepaintBoundaries = true,
+    bool addSemanticIndexes = true,
+    int? semanticChildCount,
+    DragStartBehavior dragStartBehavior = DragStartBehavior.start,
+    ScrollViewKeyboardDismissBehavior keyboardDismissBehavior =
+        ScrollViewKeyboardDismissBehavior.manual,
   }) : super(
           createController: createController ?? ScrollController.new,
           scrollable: (controller) {
@@ -27,6 +43,20 @@ class FadeGridViewBuilder extends FadeScrollable {
               gridDelegate: gridDelegate,
               itemCount: itemCount,
               itemBuilder: itemBuilder,
+              reverse: reverse,
+              primary: primary,
+              physics: physics,
+              shrinkWrap: shrinkWrap,
+              findChildIndexCallback: findChildIndexCallback,
+              addAutomaticKeepAlives: addAutomaticKeepAlives,
+              addRepaintBoundaries: addRepaintBoundaries,
+              addSemanticIndexes: addSemanticIndexes,
+              cacheExtent: cacheExtent,
+              semanticChildCount: semanticChildCount,
+              dragStartBehavior: dragStartBehavior,
+              keyboardDismissBehavior: keyboardDismissBehavior,
+              restorationId: restorationId,
+              clipBehavior: clipBehavior,
             );
           },
         );
