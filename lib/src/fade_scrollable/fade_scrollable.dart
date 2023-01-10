@@ -67,7 +67,7 @@ class _FadeScrollableState<T extends ScrollController>
   void onPositionChanged() {
     final viewport = controller.position.viewportDimension;
     final maxScrollExtent = controller.position.maxScrollExtent;
-    if (viewport <= maxScrollExtent) {
+    if (viewport >= maxScrollExtent) {
       fadeSideFactorChangeNotifier.updateFadeFactor(
         start: 0,
         end: 0,
