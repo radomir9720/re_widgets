@@ -13,6 +13,11 @@ export 'src/avoid_bottom_inset/bottom_safe_area.dart';
 // Cupertino time picker
 export 'src/cupertino_time_picker/cupertino_time_picker.dart';
 
+// Extensions
+export 'src/extensions/theme_extensions.dart';
+export 'src/extensions/snack_bar_extensions.dart';
+export 'src/extensions/target_platform_extensions.dart';
+
 // Fade scrollable
 export 'src/fade_scrollable/fade_scrollable.dart';
 export 'src/fade_scrollable/scrollables/fade_grid_view_builder.dart';
