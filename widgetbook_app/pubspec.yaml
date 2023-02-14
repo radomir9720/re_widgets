@@ -18,7 +18,7 @@ dependencies:
   re_seedwork:
     git:
       url: https://github.com/radomir9720/re_seedwork.git
-      ref: "0.1.4"
+      ref: "0.2.0"
   cupertino_icons: ^1.0.2
   widgetbook_annotation: ^2.1.0
 
