@@ -1,6 +1,6 @@
 name: re_widgets
 description: A Very Good Project created by Very Good CLI.
-version: 0.2.2+8
+version: 0.2.3+9
 publish_to: none
 
 environment:
@@ -13,7 +13,7 @@ dependencies:
   re_seedwork:
     git:
       url: https://github.com/radomir9720/re_seedwork.git
-      ref: "0.3.1"
+      ref: "1.0.0"
 
 dev_dependencies:
   flutter_test:
