@@ -15,7 +15,7 @@ jobs:
       - name: 🐦 Setup Flutter
         uses: subosito/flutter-action@v2
         with:
-          flutter-version: "3.3.7"
+          flutter-version: "3.13.4"
           channel: "stable"
           cache: true
 
@@ -31,4 +31,4 @@ jobs:
         with:
           workingDir: widgetbook_app
           baseHref: /re_widgets/
-          customArgs: "-t lib/main.widgetbook.dart"
+          customArgs: "-t lib/main.dart"
