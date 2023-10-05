@@ -23,6 +23,7 @@ export 'src/fade_scrollable/fade_scrollable.dart';
 export 'src/fade_scrollable/scrollables/fade_grid_view_builder.dart';
 export 'src/fade_scrollable/scrollables/fade_list_view_builder.dart';
 export 'src/fade_scrollable/scrollables/fade_page_view_builder.dart';
+export 'src/fade_scrollable/scrollables/fade_custom_scroll_view.dart';
 export 'src/fade_scrollable/scrollables/fade_single_child_scroll_view.dart';
 
 // Fade shader
