@@ -221,7 +221,7 @@ class PersistentAppBar extends SliverPersistentHeaderDelegate {
                         child: Text(
                           _largeTitle,
                           style: largeTitleTextStyle ??
-                              Theme.of(context).textTheme.headline5,
+                              Theme.of(context).textTheme.headlineSmall,
                         ),
                       ),
                     ),

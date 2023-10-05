@@ -7,7 +7,7 @@ import 'package:flutter/widgets.dart';
 class UnboundedHitTestStack extends Stack {
   /// Creates a
   /// {@macro re_seedwork.widgets.unboundedHitTestStack}
-  UnboundedHitTestStack({
+  const UnboundedHitTestStack({
     super.key,
     super.alignment,
     super.textDirection,
