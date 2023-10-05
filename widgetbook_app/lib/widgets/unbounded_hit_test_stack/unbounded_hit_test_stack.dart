@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:re_widgets/re_widgets.dart';
 import 'package:widgetbook_annotation/widgetbook_annotation.dart';
 
-@WidgetbookUseCase(name: 'Default', type: UnboundedHitTestStack)
+@UseCase(name: 'Default', type: UnboundedHitTestStack)
 Widget buildUnboundedHitTestStack(BuildContext context) {
   final children = [
     const SizedBox.square(

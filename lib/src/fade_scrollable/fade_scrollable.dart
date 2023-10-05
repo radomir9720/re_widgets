@@ -65,6 +65,10 @@ class _FadeScrollableState<T extends ScrollController>
   }
 
   void onPositionChanged() {
+    assert(
+      controller.hasClients,
+      'Scroll controller should be attached to a scroll view',
+    );
     final viewport = controller.position.viewportDimension;
     final maxScrollExtent = controller.position.maxScrollExtent;
     if (maxScrollExtent == 0) {

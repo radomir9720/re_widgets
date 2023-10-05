@@ -3,9 +3,9 @@ import 'package:re_widgets/re_widgets.dart';
 import 'package:widgetbook_annotation/widgetbook_annotation.dart';
 import 'package:widgetbook_app/utils/knobs.dart';
 import 'package:widgetbook_app/utils/string.dart';
-import 'package:widgetbook/widgetbook.dart' show Option, Knobs;
+import 'package:widgetbook/widgetbook.dart';
 
-@WidgetbookUseCase(name: 'Default', type: PersistentAppBar)
+@UseCase(name: 'Default', type: PersistentAppBar)
 Widget buildPersistentAppBar(BuildContext context) {
   return Scaffold(
     body: CustomScrollView(
@@ -32,21 +32,15 @@ Widget buildPersistentAppBar(BuildContext context) {
                 label: 'Flexible space height',
                 initial: 60,
               ),
-              mode: context.knobs.options(
+              mode: context.knobs.list(
                 label: '',
+                labelBuilder: (value) {
+                  return value.name;
+                },
                 options: const [
-                  Option(
-                    label: 'Use toolbar',
-                    value: FlexibleSpaceMode.useToolbar,
-                  ),
-                  Option(
-                    label: 'Use safe area and toolbar',
-                    value: FlexibleSpaceMode.useSafeAreaAndToolbar,
-                  ),
-                  Option(
-                    label: 'None',
-                    value: FlexibleSpaceMode.none,
-                  ),
+                  FlexibleSpaceMode.useToolbar,
+                  FlexibleSpaceMode.useSafeAreaAndToolbar,
+                  FlexibleSpaceMode.none,
                 ],
               ),
             ),

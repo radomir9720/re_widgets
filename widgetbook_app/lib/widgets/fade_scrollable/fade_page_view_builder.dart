@@ -3,7 +3,7 @@ import 'package:re_widgets/re_widgets.dart';
 import 'package:widgetbook_annotation/widgetbook_annotation.dart';
 import 'package:widgetbook_app/utils/knobs.dart';
 
-@WidgetbookUseCase(name: 'Default', type: FadePageViewBuilder)
+@UseCase(name: 'Default', type: FadePageViewBuilder)
 Widget defaultFadePageViewBuilderUseCase(BuildContext context) {
   return FadePageViewBuilder(
     itemCount: context.itemsCountKnob(initial: 3),

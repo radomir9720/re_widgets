@@ -4,7 +4,7 @@ import 'package:widgetbook_annotation/widgetbook_annotation.dart';
 // import 'package:widgetbook/widgetbook.dart' show Knobs, Option;
 import 'package:widgetbook_app/utils/knobs.dart';
 
-@WidgetbookUseCase(name: 'Default', type: FadeListViewBuilder)
+@UseCase(name: 'Default', type: FadeListViewBuilder)
 Widget defaultFadeListViewBuilderUseCase(BuildContext context) {
   return FadeListViewBuilder(
     itemCount: context.itemsCountKnob(),
