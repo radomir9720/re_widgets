@@ -5,10 +5,10 @@ import 'package:flutter/widgets.dart';
 ///
 /// Meant to be used with [PageView]
 /// {@endtemplate}
-class DotsPageIndicator extends StatelessWidget {
+class PageViewIndicator extends StatelessWidget {
   /// Creates
   /// {@macro re_seedwork.widgets.dotsPageIndicator}
-  const DotsPageIndicator({
+  const PageViewIndicator({
     super.key,
     required this.pageController,
     required this.count,

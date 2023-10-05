@@ -44,5 +44,5 @@ export 'src/scroll_to_load_more/scroll_to_load_more.dart';
 // Unbounded hit test stack
 export 'src/unbounded_hit_test_stack/unbounded_hit_test_stack.dart';
 
-// Dots page indicator
-export 'src/dots_page_indicator/dots_page_indicator.dart';
+// Page view indicator
+export 'src/page_view_indicator/page_view_indicator.dart';
