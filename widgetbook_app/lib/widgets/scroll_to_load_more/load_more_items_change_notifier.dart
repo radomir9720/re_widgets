@@ -1,30 +1,99 @@
 part of 'scroll_to_load_more.dart';
 
-typedef _LoadMoreItemsState = AsyncData<_ItemsState, Object>;
+abstract class _LoadMoreItemsState {
+  const _LoadMoreItemsState(this.payload);
+
+  final _ItemsState payload;
+
+  bool get isFailure => this is _FailureLoadMoreItemsState;
+
+  R when<R>({
+    required R Function() initial,
+    required R Function() loading,
+    required R Function() failure,
+    required R Function() success,
+  });
+}
+
+class _InitialLoadMoreItemsState extends _LoadMoreItemsState {
+  const _InitialLoadMoreItemsState(super.payload);
+
+  @override
+  R when<R>({
+    required R Function() initial,
+    required R Function() loading,
+    required R Function() failure,
+    required R Function() success,
+  }) {
+    return initial();
+  }
+}
+
+class _LoadingLoadMoreItemsState extends _LoadMoreItemsState {
+  const _LoadingLoadMoreItemsState(super.payload);
+
+  @override
+  R when<R>({
+    required R Function() initial,
+    required R Function() loading,
+    required R Function() failure,
+    required R Function() success,
+  }) {
+    return loading();
+  }
+}
+
+class _FailureLoadMoreItemsState extends _LoadMoreItemsState {
+  const _FailureLoadMoreItemsState(super.payload);
+
+  @override
+  R when<R>({
+    required R Function() initial,
+    required R Function() loading,
+    required R Function() failure,
+    required R Function() success,
+  }) {
+    return failure();
+  }
+}
+
+class _SuccessLoadMoreItemsState extends _LoadMoreItemsState {
+  const _SuccessLoadMoreItemsState(super.payload);
+
+  @override
+  R when<R>({
+    required R Function() initial,
+    required R Function() loading,
+    required R Function() failure,
+    required R Function() success,
+  }) {
+    return success();
+  }
+}
 
 class _LoadMoreItemsChangeNotifier extends ValueNotifier<_LoadMoreItemsState> {
   // ignore: unused_element
   _LoadMoreItemsChangeNotifier({this.batchSize = 20})
-      : super(const _LoadMoreItemsState.initial(_ItemsState.initial()));
+      : super(const _InitialLoadMoreItemsState(_ItemsState.initial()));
 
   @protected
   final int batchSize;
 
   Future<void> loadMore() async {
-    value = value.inLoading();
+    value = _LoadingLoadMoreItemsState(value.payload);
 
     await Future<void>.delayed(const Duration(milliseconds: 300));
 
     // return error
     if (Random().nextBool()) {
-      value = value.inFailure();
+      value = _FailureLoadMoreItemsState(value.payload);
       return;
     }
 
     value = _getItems();
   }
 
-  AsyncData<_ItemsState, Object> _getItems({bool refresh = false}) {
+  _LoadMoreItemsState _getItems({bool refresh = false}) {
     // Whether to return full batch, or not
     // (which means that there is no more items to load)
     final newBatchSize =
@@ -37,7 +106,7 @@ class _LoadMoreItemsChangeNotifier extends ValueNotifier<_LoadMoreItemsState> {
       })
     ];
 
-    return AsyncData.success(
+    return _SuccessLoadMoreItemsState(
       _ItemsState(
         items: items,
         hasReachedMax: newBatchSize < batchSize,
@@ -46,13 +115,13 @@ class _LoadMoreItemsChangeNotifier extends ValueNotifier<_LoadMoreItemsState> {
   }
 
   Future<void> refresh() async {
-    value = const AsyncData.loading(_ItemsState.initial());
+    value = const _LoadingLoadMoreItemsState(_ItemsState.initial());
 
     await Future<void>.delayed(const Duration(milliseconds: 300));
 
     // return error
     if (Random().nextBool()) {
-      value = value.inFailure();
+      value = _FailureLoadMoreItemsState(value.payload);
       return;
     }
 

@@ -2,7 +2,6 @@ import 'dart:math';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:re_seedwork/re_seedwork.dart';
 import 'package:widgetbook_annotation/widgetbook_annotation.dart';
 
 import 'package:re_widgets/re_widgets.dart';
@@ -10,7 +9,7 @@ import 'package:re_widgets/re_widgets.dart';
 part 'load_more_items_change_notifier.dart';
 part 'items_state.dart';
 
-@WidgetbookUseCase(name: 'Default', type: ScrollToLoadMore)
+@UseCase(name: 'Default', type: ScrollToLoadMore)
 Widget buildScrollToLoadMore(BuildContext context) {
   return const _ScrollToLoadMoreExample();
 }
@@ -48,12 +47,11 @@ class _ScrollToLoadMoreExampleState extends State<_ScrollToLoadMoreExample> {
             final items = payload.items;
             if (items.isEmpty) {
               return Center(
-                child: state.maybeWhen(
-                  orElse: (_) => const CircularProgressIndicator(),
-                  failure: (payload, error) => _FailureWidget(
-                    onPressed: loadMoreChangeNotifier.loadMore,
-                  ),
-                ),
+                child: state.isFailure
+                    ? _FailureWidget(
+                        onPressed: loadMoreChangeNotifier.loadMore,
+                      )
+                    : const CircularProgressIndicator(),
               );
             }
             return Column(
@@ -75,10 +73,10 @@ class _ScrollToLoadMoreExampleState extends State<_ScrollToLoadMoreExample> {
                     hasReachedMax: payload.hasReachedMax,
                     onTriggered: loadMoreChangeNotifier.loadMore,
                     state: state.when(
-                      initial: (_) => ScrollToLoadMoreState.initial,
-                      loading: (_) => ScrollToLoadMoreState.loading,
-                      success: (_) => ScrollToLoadMoreState.success,
-                      failure: (_, __) => ScrollToLoadMoreState.failure,
+                      initial: () => ScrollToLoadMoreState.initial,
+                      loading: () => ScrollToLoadMoreState.loading,
+                      success: () => ScrollToLoadMoreState.success,
+                      failure: () => ScrollToLoadMoreState.failure,
                     ),
                     scrollableBuilder: (bottom) {
                       return ListView.builder(
