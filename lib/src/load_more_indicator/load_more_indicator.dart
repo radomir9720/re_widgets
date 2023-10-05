@@ -87,7 +87,7 @@ class _LoadMoreIndicatorState extends State<LoadMoreIndicator>
                     return SizedBox(width: widget.paddingBetweenDots);
                   }
 
-                  final segmentCenter = segmentLength * index;
+                  final segmentCenter = segmentLength * (index / 2);
                   final opacity = 1 - (controller.value - segmentCenter).abs();
 
                   return Container(
