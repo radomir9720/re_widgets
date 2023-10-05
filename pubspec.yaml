@@ -1,6 +1,6 @@
 name: re_widgets
 description: A Very Good Project created by Very Good CLI.
-version: 0.2.3+9
+version: 0.3.0+10
 publish_to: none
 
 environment:
