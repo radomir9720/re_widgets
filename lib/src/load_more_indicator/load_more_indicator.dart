@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:re_seedwork/re_seedwork.dart';
 
 /// {@template re_seedwork.widgets.loadMoreIndicator}
 /// A progress indicator in the form of several dots (default 3) of
@@ -82,8 +81,12 @@ class _LoadMoreIndicatorState extends State<LoadMoreIndicator>
             return Row(
               mainAxisSize: MainAxisSize.min,
               children: List<Widget>.generate(
-                widget.dotsNumber,
+                widget.dotsNumber * 2 - 1,
                 (index) {
+                  if (index.isOdd) {
+                    return SizedBox(width: widget.paddingBetweenDots);
+                  }
+
                   final segmentCenter = segmentLength * index;
                   final opacity = 1 - (controller.value - segmentCenter).abs();
 
@@ -97,7 +100,7 @@ class _LoadMoreIndicatorState extends State<LoadMoreIndicator>
                     ),
                   );
                 },
-              ).divideBy(SizedBox(width: widget.paddingBetweenDots)).toList(),
+              ),
             );
           },
         ),

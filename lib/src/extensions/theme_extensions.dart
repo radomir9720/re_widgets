@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:re_seedwork/re_seedwork.dart';
 
 /// [ThemeExtensionColors] extension
 extension ThemeExtensionColors on BuildContext {
@@ -10,6 +9,6 @@ extension ThemeExtensionColors on BuildContext {
   /// and is passed to [ArgumentError.checkNotNull()], and
   /// is used as the parameter "name" in the error message.
   T extensionColors<T extends ThemeExtension<T>>([String? name]) {
-    return Theme.of(this).extension<T>().checkNotNull(name);
+    return ArgumentError.checkNotNull(Theme.of(this).extension<T>(), name);
   }
 }

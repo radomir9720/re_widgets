@@ -10,10 +10,6 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  re_seedwork:
-    git:
-      url: https://github.com/radomir9720/re_seedwork.git
-      ref: "1.0.0"
 
 dev_dependencies:
   flutter_test:
