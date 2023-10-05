@@ -71,19 +71,15 @@ class _FadeScrollableState<T extends ScrollController>
     );
     final viewport = controller.position.viewportDimension;
     final maxScrollExtent = controller.position.maxScrollExtent;
-    if (maxScrollExtent == 0) {
-      fadeSideFactorChangeNotifier.updateFadeFactor(
-        start: 0,
-        end: 0,
-      );
-      return;
-    }
-    final offset = controller.offset.clamp(0, maxScrollExtent);
+
+    final operand = maxScrollExtent == 0 ? viewport : maxScrollExtent;
+
+    final offset = controller.offset.abs().clamp(0, operand);
 
     final startFactor = (offset.clamp(0, viewport) / viewport)
         .clamp(0.0, widget.fadeDimensionFactor);
 
-    final endFactor = ((maxScrollExtent - offset).clamp(0, viewport) / viewport)
+    final endFactor = ((operand - offset).clamp(0, viewport) / viewport)
         .clamp(0.0, widget.fadeDimensionFactor);
 
     fadeSideFactorChangeNotifier.updateFadeFactor(
