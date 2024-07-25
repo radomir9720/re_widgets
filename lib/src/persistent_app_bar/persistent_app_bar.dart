@@ -35,6 +35,7 @@ class PersistentAppBar extends SliverPersistentHeaderDelegate {
     this.actions,
     this.automaticallyImplyLeading = true,
     this.flexibleSpaceOptions = const FlexibleSpaceOptions(),
+    this.leadingWidth,
   });
 
   /// Optional widget, which will be placed under app bar
@@ -120,6 +121,10 @@ class PersistentAppBar extends SliverPersistentHeaderDelegate {
   /// {@macro flutter.material.appbar.leading}
   @protected
   final Widget? leading;
+
+  /// {@macro flutter.material.appbar.leadingWidth}
+  @protected
+  final double? leadingWidth;
 
   /// Calculates the object opacity using [opacityRange] and
   /// current [offset] or [expandFactor] (depends on [opacityRange] type)
@@ -237,6 +242,7 @@ class PersistentAppBar extends SliverPersistentHeaderDelegate {
             toolbarHeight: toolbarHeight,
             automaticallyImplyLeading: automaticallyImplyLeading,
             leading: leading,
+            leadingWidth: leadingWidth,
             title: _title == null
                 ? null
                 : Opacity(
