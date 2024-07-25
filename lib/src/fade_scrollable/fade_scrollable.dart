@@ -41,7 +41,7 @@ class FadeScrollable<T extends ScrollController> extends StatefulWidget {
 }
 
 class _FadeScrollableState<T extends ScrollController>
-    extends State<FadeScrollable<T>> {
+    extends State<FadeScrollable<T>> with WidgetsBindingObserver {
   late final T controller;
 
   late final FadeSideFactorChangeNotifier fadeSideFactorChangeNotifier;
@@ -62,6 +62,14 @@ class _FadeScrollableState<T extends ScrollController>
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
       onPositionChanged();
     });
+
+    WidgetsBinding.instance.addObserver(this);
+  }
+
+  @override
+  void didChangeMetrics() {
+    onPositionChanged();
+    super.didChangeMetrics();
   }
 
   void onPositionChanged() {
@@ -72,14 +80,20 @@ class _FadeScrollableState<T extends ScrollController>
     final viewport = controller.position.viewportDimension;
     final maxScrollExtent = controller.position.maxScrollExtent;
 
-    final operand = maxScrollExtent == 0 ? viewport : maxScrollExtent;
+    if (maxScrollExtent == 0) {
+      fadeSideFactorChangeNotifier.updateFadeFactor(
+        start: 0,
+        end: 0,
+      );
+      return;
+    }
 
-    final offset = controller.offset.abs().clamp(0, operand);
+    final offset = controller.offset.abs().clamp(0, maxScrollExtent);
 
     final startFactor = (offset.clamp(0, viewport) / viewport)
         .clamp(0.0, widget.fadeDimensionFactor);
 
-    final endFactor = ((operand - offset).clamp(0, viewport) / viewport)
+    final endFactor = ((maxScrollExtent - offset).clamp(0, viewport) / viewport)
         .clamp(0.0, widget.fadeDimensionFactor);
 
     fadeSideFactorChangeNotifier.updateFadeFactor(
@@ -93,6 +107,7 @@ class _FadeScrollableState<T extends ScrollController>
     controller.removeListener(onPositionChanged);
     if (widget.disposeController) controller.dispose();
     fadeSideFactorChangeNotifier.dispose();
+    WidgetsBinding.instance.removeObserver(this);
     super.dispose();
   }
 
